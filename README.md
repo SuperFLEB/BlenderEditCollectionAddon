@@ -12,6 +12,14 @@ worked, but then you have an extra copy hanging around your scene).
 Since it was a relatively reprocducible process to find and link the Collections, I created this addon that allows quickly
 dropping in to edit the underlying Collection of a Collection Instance.
 
+## To Install
+
+Put the "edit_instanced_collection" directory into your Blender/3.x/scripts/addons directory and, y'know, light 'er up in
+your prefs.
+
+(I'll get it packaged up properly into a release sometime soon here, and give proper installation instructions. It's really
+late, I'm one foot in the bed, and I'm in no condition to do things prettily right now. Watch this space.)
+
 ## To Use
 
 Select a Collection Instance. Selecting multiple Collection Instances is not supported, and the active item must be a Collection
