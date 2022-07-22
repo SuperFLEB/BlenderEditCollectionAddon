@@ -1,6 +1,9 @@
 # Blender "Edit Instanced Collection" Addon
 An add-on for Blender that allows quickly editing Collection Instance source collections
 
+*:construction: If you're reading this, it's literally the first revision that I just threw up to have somewhere to put this. It's not
+terribly complicated, so it should all work, but the docs and polish aren't up to snuff.*
+
 This came about as the result of making Asset Library files that used Collection Instances to house multiple-Object assets.
 Upon importing them into another file, they would be seemingly uneditable, as Blender would link the Collection Instances to
 the current Scene, but not the Collection itself.
