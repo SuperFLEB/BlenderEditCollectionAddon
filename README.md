@@ -16,7 +16,8 @@ Blender addons directory.
 ## To Use
 
 1. Select a Collection Instance. (Selecting multiple Collection Instances is not supported.)
-2. Either from the Object menu or the spacebar/W context menu, select "Edit Instanced Collection".
+2. Either from the Object menu or the spacebar/W context menu, select "Edit Instanced Collection", or use the hotkey (Ctrl+Alt+C)
+   in Object Mode.
 3. You will be dropped into a newly-created Scene containing nothing but the Collection. Edit the collection, and your
    edits will be reflected in all instances of the Collection.
 4. Once you are done editing (ensure that all new objects are within the Collection) delete the temporary Scene (named
