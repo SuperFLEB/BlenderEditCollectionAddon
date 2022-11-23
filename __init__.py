@@ -39,13 +39,23 @@ class EditCollection(bpy.types.Operator):
         new_scene.name = scene_name
         bpy.context.window.scene = new_scene
         new_scene.collection.children.link(coll)
+
+        world = bpy.data.worlds.new(bpy.context.scene.name)
+        new_scene.world = world
+
+        world.use_nodes = True
+        checker_texture = world.node_tree.nodes.new('ShaderNodeTexChecker')
+        checker_texture.inputs['Scale'].default_value = 20
+        world.node_tree.links.new(checker_texture.outputs['Color'], world.node_tree.nodes['Background'].inputs['Color'])
+
         # Select the collection
         bpy.context.view_layer.active_layer_collection = bpy.context.view_layer.layer_collection.children[coll.name]
 
         def message(self_2, _):
             global seen_popup
 
-            self_2.layout.label(text=f"When you're done, simply delete the scene using the X ")
+            self_2.layout.label(text="When you're done, simply delete the scene using the X")
+            self_2.layout.label(text="and run File > Clean Up > Unused Data Blocks to clean up")
             self_2.layout.label(
                 text=f"Be sure to keep all changes you wish to apply within the \"{coll.name}\" collection.")
             # Only show the message about it being able to be turned off the first time
