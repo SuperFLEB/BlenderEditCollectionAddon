@@ -8,10 +8,10 @@ the current Scene, but not the Collection itself.
 Since it was a relatively reproducible process to find and link the Collections, I created this addon that allows quickly
 dropping in to edit the underlying Collection of a Collection Instance, and then dropping out.
 
-## To Install
+## To install
 
-It's an ordinary Blender addon. You can either install the ZIP release and install it, or clone/copy this into your
-Blender addons directory.
+Either install the ZIP file from the release or clone this repository and use the
+build_release.py script to build a ZIP file that you can install into Blender.
 
 ## To Use
 
@@ -23,5 +23,5 @@ Blender addons directory.
 4. Once you are done editing (ensure that all new objects are within the Collection) delete the temporary Scene (named
    "temp(name-of-collection)").
 
-You can drill down to multiple levels, though you will have to be sure to clean up any temporary Scenes
-made by the addon.
+You can drill down to multiple levels, though you will have to be sure to clean up any temporary Scenes and Worlds
+made by the addon (usually, using the Clean Up tools).
