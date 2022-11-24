@@ -5,7 +5,7 @@ bl_info = {
     "name": "Edit Instanced Collection",
     "description": "Edit a Collection Instance's source Collection (even if it is not in the Scene).",
     "author": "FLEB",
-    "version": (0, 2, 0),
+    "version": (0, 2, 1),
     "blender": (3, 1, 0),
     "location": "Object > Edit Instanced Collection",
     "doc_url": "https://github.com/SuperFLEB/BlenderEditCollectionAddon",
