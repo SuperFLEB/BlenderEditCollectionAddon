@@ -1,4 +1,5 @@
 import bpy
+from mathutils import Vector
 
 bl_info = {
     "name": "Edit Instanced Collection",
@@ -40,13 +41,25 @@ class EditCollection(bpy.types.Operator):
         bpy.context.window.scene = new_scene
         new_scene.collection.children.link(coll)
 
-        world = bpy.data.worlds.new(bpy.context.scene.name)
-        new_scene.world = world
+        if prefs.world_texture != "none":
+            world = bpy.data.worlds.new(bpy.context.scene.name)
+            new_scene.world = world
+            world.use_nodes = True
+            tree = world.node_tree
 
-        world.use_nodes = True
-        checker_texture = world.node_tree.nodes.new('ShaderNodeTexChecker')
-        checker_texture.inputs['Scale'].default_value = 20
-        world.node_tree.links.new(checker_texture.outputs['Color'], world.node_tree.nodes['Background'].inputs['Color'])
+            if prefs.world_texture in ["checker", "checker_view"]:
+                checker_texture = tree.nodes.new("ShaderNodeTexChecker")
+                checker_texture.inputs["Scale"].default_value = 20
+                checker_texture.location = Vector((-250, 0))
+                if prefs.world_texture == "checker_view":
+                    coord = tree.nodes.new("ShaderNodeTexCoord")
+                    coord.location = Vector((-500, 0))
+                    for op in coord.outputs:
+                        op.hide = True
+                    tree.links.new(coord.outputs["Window"], checker_texture.inputs["Vector"])
+                tree.links.new(checker_texture.outputs["Color"], tree.nodes["Background"].inputs["Color"])
+            elif prefs.world_texture == "gray":
+                tree.nodes["Background"].inputs["Color"].default_value = (.3, .3, .3, 1)
 
         # Select the collection
         bpy.context.view_layer.active_layer_collection = bpy.context.view_layer.layer_collection.children[coll.name]
@@ -70,7 +83,7 @@ class EditCollection(bpy.types.Operator):
         if not prefs.hide_scene_popup:
             bpy.context.window_manager.popup_menu(message,
                                                   title=f"Temporary Scene \"{scene_name}\" Created",
-                                                  icon='COLLECTION_NEW')
+                                                  icon="COLLECTION_NEW")
 
         return {"FINISHED"}
 
@@ -82,10 +95,21 @@ class EditInstancedCollectionPreferences(bpy.types.AddonPreferences):
         description="Do not show the informational pop-up when editing a Collection",
         default=False
     )
+    world_texture: bpy.props.EnumProperty(
+        name="Background",
+        description="Background (World) texture of the temporary scene",
+        items=[
+            ("checker", "Checker (generated map)", "Checker-like texture using a Generated map"),
+            ("checker_view", "Checker (view aligned)", "Checkerboard texture aligned to the view"),
+            ("gray", "Gray", "Solid Gray Background"),
+            ("none", "None", "No World/background (black)")
+        ]
+    )
 
     def draw(self, context):
         layout = self.layout
-        layout.prop(self, 'hide_scene_popup')
+        layout.prop(self, "world_texture")
+        layout.prop(self, "hide_scene_popup")
 
 
 def menu_function(self, context):
@@ -108,8 +132,8 @@ def register():
     # Add keymaps
     wm = bpy.context.window_manager
     if wm.keyconfigs.addon:
-        km = wm.keyconfigs.addon.keymaps.new(name='Object Mode', space_type='EMPTY')
-        kmi = km.keymap_items.new(EditCollection.bl_idname, 'C', 'PRESS', ctrl=True, alt=True)
+        km = wm.keyconfigs.addon.keymaps.new(name="Object Mode", space_type="EMPTY")
+        kmi = km.keymap_items.new(EditCollection.bl_idname, "C", "PRESS", ctrl=True, alt=True)
         # kmi.properties.total = 4
         addon_keymaps.append((km, kmi))
 
@@ -129,5 +153,5 @@ def unregister():
     addon_keymaps.clear()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     register()
